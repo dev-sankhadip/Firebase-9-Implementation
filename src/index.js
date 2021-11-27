@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore'
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot } from 'firebase/firestore'
 const firebaseConfig = {
     apiKey: "AIzaSyB1HktvzpD7ebCCyHvkiPmV1Ww2wCp5mIU",
     authDomain: "fir-9-7ed0a.firebaseapp.com",
@@ -63,4 +63,15 @@ deleteForm.addEventListener("submit", (e) => {
         .then((res) => {
             deleteForm.reset();
         })
+})
+
+
+
+// Realtime Collection data
+onSnapshot(colRef, (res) => {
+    let books = [];
+    res.docs.forEach((doc) => {
+        books.push({ ...doc.data(), id: doc.id });
+    })
+    console.log(books);
 })
