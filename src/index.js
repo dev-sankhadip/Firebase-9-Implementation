@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import {
     getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot, query, where, orderBy,
-    serverTimestamp, getDoc
+    serverTimestamp, getDoc, updateDoc
 } from 'firebase/firestore'
 const firebaseConfig = {
     apiKey: "AIzaSyB1HktvzpD7ebCCyHvkiPmV1Ww2wCp5mIU",
@@ -99,4 +99,21 @@ onSnapshot(docRef, (doc) => {
     console.log(doc.data());
 }, (err) => {
     console.log(err);
+})
+
+
+// Update a document
+const updateForm = document.querySelector(".update");
+updateForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const docRef = doc(db, 'books', updateForm.id.value);
+    updateDoc(docRef, {
+        title: "Updated Title"
+    })
+        .then((res) => {
+            console.log(res)
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 })
