@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot, query, where } from 'firebase/firestore'
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot, query, where, orderBy, serverTimestamp } from 'firebase/firestore'
 const firebaseConfig = {
     apiKey: "AIzaSyB1HktvzpD7ebCCyHvkiPmV1Ww2wCp5mIU",
     authDomain: "fir-9-7ed0a.firebaseapp.com",
@@ -40,7 +40,8 @@ addForm.addEventListener("submit", (e) => {
 
     addDoc(colRef, {
         title: addForm.title.value,
-        author: addForm.author.value
+        author: addForm.author.value,
+        createdAt: serverTimestamp()
     })
         .then((res) => {
             addForm.reset();
@@ -64,7 +65,7 @@ deleteForm.addEventListener("submit", (e) => {
 
 
 // Firestore Queries
-const qResult = query(colRef, where("author", "==", "novoneel"));
+const qResult = query(colRef, where("author", "==", "novoneel"), orderBy("createdAt"));
 
 // Pass CollectionRef or Query as first argument in snapshot
 // Realtime Collection data
@@ -74,4 +75,6 @@ onSnapshot(qResult, (res) => {
         books.push({ ...doc.data(), id: doc.id });
     })
     console.log(books);
+}, (err) => {
+    console.log(err);
 })
