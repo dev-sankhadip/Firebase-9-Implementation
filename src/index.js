@@ -1,5 +1,8 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot, query, where, orderBy, serverTimestamp } from 'firebase/firestore'
+import {
+    getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot, query, where, orderBy,
+    serverTimestamp, getDoc
+} from 'firebase/firestore'
 const firebaseConfig = {
     apiKey: "AIzaSyB1HktvzpD7ebCCyHvkiPmV1Ww2wCp5mIU",
     authDomain: "fir-9-7ed0a.firebaseapp.com",
@@ -75,6 +78,25 @@ onSnapshot(qResult, (res) => {
         books.push({ ...doc.data(), id: doc.id });
     })
     console.log(books);
+}, (err) => {
+    console.log(err);
+})
+
+
+
+
+// Get a single document
+const docRef = doc(db, 'books', 'MpOyDZhytoaX8GJv5Mzq');
+getDoc(docRef)
+    .then((res) => {
+        console.log(res.data());
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+
+onSnapshot(docRef, (doc) => {
+    console.log(doc.data());
 }, (err) => {
     console.log(err);
 })
